@@ -689,7 +689,7 @@ p{ margin: 0; color: var(--muted); }
 .modal__backdrop{ position:absolute; inset:0; background: rgba(4,4,4,0.85); backdrop-filter: blur(6px); }
 .modal__panel{
   position: relative;
-  max-width: 560px; width:100%;
+  max-width: 900px; width:100%;
   max-height: 88vh;
   overflow-y: auto;
   background: var(--surface);
@@ -709,8 +709,8 @@ p{ margin: 0; color: var(--muted); }
   display:flex; align-items:center; justify-content:center;
   z-index: 2;
 }
-.modal__image{ border-radius: var(--radius-md); overflow:hidden; margin-bottom: 1.25rem; background: var(--card); height: 280px; display:flex; align-items:center; justify-content:center; }
-.modal__image img{ width:100%; height:100%; object-fit: cover; }
+.modal__image{ border-radius: var(--radius-md); overflow:hidden; margin-bottom: 1.25rem; background: var(--card); max-height: 70vh; display:flex; align-items:center; justify-content:center; }
+.modal__image img{ width:100%; height:100%; max-height: 70vh; object-fit: contain; }
 .modal__category{ font-size: .78rem; color: var(--accent); }
 .modal__title{ font-size: 1.5rem; margin: .5rem 0 .75rem; }
 .modal__desc{ font-size: .95rem; }
@@ -906,7 +906,8 @@ p{ margin: 0; color: var(--muted); }
 
   .modal{ padding: 1rem; }
   .modal__panel{ padding: 1.1rem; max-height: 92vh; }
-  .modal__image{ height: 200px; }
+  .modal__image{ max-height: 50vh; }
+  .modal__image img{ max-height: 50vh; }
   .modal__panel--video video{ max-height: 45vh; }
 
   .contact__actions{ flex-direction: column; align-items: stretch; }
