@@ -1,0 +1,1 @@
+Place profile.jpg, project-01.jpg ... project-06.jpg, video-01.jpg, video-02.jpg here. See ../README.txt

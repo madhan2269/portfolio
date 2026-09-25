@@ -1,0 +1,286 @@
+/* =========================================================
+   admin.css — styles specific to admin.html
+   Relies on the color/type tokens defined in css/style.css
+   (loaded first), so theme switching works here too.
+   ========================================================= */
+
+.admin-body{
+  min-height: 100vh;
+  background:
+    radial-gradient(600px circle at 100% 0%, var(--primary-soft), transparent 60%),
+    var(--bg);
+}
+
+/* ---------- Passcode gate ---------- */
+.gate{
+  position: fixed; inset: 0;
+  z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+  padding: 1.5rem;
+}
+.gate__card{
+  width: 100%; max-width: 360px;
+  display: flex; flex-direction: column; gap: .9rem;
+  padding: 2.25rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  text-align: center;
+}
+.gate__logo{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 0 auto;
+}
+.gate__logo span{ color: var(--primary); }
+.gate__card h1{ font-size: 1.3rem; }
+.gate__card p{ font-size: .88rem; }
+.gate__card input[type="password"]{
+  padding: .85rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .95rem;
+}
+.gate__card .btn{ justify-content: center; }
+.gate__error{ color: var(--accent); font-size: .82rem; }
+.gate__back{ font-size: .82rem; color: var(--muted); margin-top: .25rem; }
+.gate__back:hover{ color: var(--text); }
+.gate.is-unlocked{ display: none; }
+
+/* ---------- Admin shell ---------- */
+.admin{ min-height: 100vh; }
+
+.admin-nav{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.admin-nav__logo{
+  font-family: var(--font-display);
+  font-weight: 700;
+  display: flex; align-items: center; gap: .6rem;
+}
+.admin-nav__logo span{ color: var(--primary); }
+.admin-nav__badge{
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 500;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: .15rem .55rem;
+  border-radius: 999px;
+}
+.admin-nav__actions{ display: flex; align-items: center; gap: 1rem; }
+
+.admin-container{
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+.admin-note{
+  font-size: .85rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--primary-soft);
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+.admin-note strong{ color: var(--primary); }
+#storageUsage{ display: block; margin-top: .4rem; color: var(--muted); font-size: .78rem; }
+
+.admin-tabs{
+  display: flex; gap: .5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.admin-tab{
+  padding: .8rem 1.4rem;
+  font-family: var(--font-display);
+  font-size: .92rem;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  transform: translateY(1px);
+}
+.admin-tab.is-active{ color: var(--text); border-bottom-color: var(--primary); }
+
+.admin-panel{ display: none; }
+.admin-panel.is-active{ display: block; }
+
+.admin-form{
+  display: flex; flex-direction: column; gap: 1.5rem;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  margin-bottom: 2.5rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+.admin-form h2{
+  font-size: 1.2rem;
+  padding-bottom: 1rem;
+  margin-bottom: -.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-row{ display: flex; flex-direction: column; gap: .55rem; }
+.form-row label{
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.form-row input[type="text"],
+.form-row input[type="password"],
+.form-row select,
+.form-row textarea{
+  padding: .85rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .92rem;
+  resize: vertical;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.form-row input[type="text"]::placeholder,
+.form-row textarea::placeholder{ color: var(--muted); opacity: .7; }
+.form-row input[type="text"]:focus,
+.form-row input[type="password"]:focus,
+.form-row select:focus,
+.form-row textarea:focus{
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+.form-hint{ font-size: .78rem; color: var(--muted); line-height: 1.5; }
+
+.form-actions{
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  padding-top: .5rem;
+}
+
+/* ---------- Drag-and-drop file picker (images + videos) ---------- */
+.file-drop{
+  position: relative;
+  display: flex; align-items: center; gap: .9rem;
+  padding: 1.1rem 1.25rem;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  cursor: pointer;
+  transition: border-color .2s var(--ease), background .2s var(--ease);
+}
+.file-drop:hover{ border-color: var(--primary); }
+.file-drop.is-dragover{
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+.file-drop.has-file{ border-style: solid; border-color: var(--primary); }
+.file-drop input[type="file"]{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-drop__icon{
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.file-drop__text{
+  display: flex; flex-direction: column; gap: .15rem;
+  pointer-events: none;
+  min-width: 0;
+}
+.file-drop__title{ font-size: .88rem; color: var(--text); }
+.file-drop__meta{
+  font-size: .78rem; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.file-drop.has-file .file-drop__meta{ color: var(--primary); }
+
+.admin-list{ display: flex; flex-direction: column; gap: .75rem; }
+
+.admin-item{
+  display: flex; align-items: center; gap: 1rem;
+  padding: .85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+}
+.admin-item__thumb{
+  width: 56px; height: 56px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: var(--card-alt);
+  flex-shrink: 0;
+}
+.admin-item__thumb--empty{
+  display: flex; align-items: center; justify-content: center;
+  font-size: .68rem; color: var(--muted); text-align: center;
+}
+.admin-item__body{ flex: 1; min-width: 0; }
+.admin-item__title{ font-family: var(--font-display); font-size: .95rem; }
+.admin-item__meta{ font-size: .78rem; color: var(--muted); }
+.admin-item__actions{ display: flex; gap: .5rem; flex-shrink: 0; }
+.admin-item__actions button{
+  font-size: .82rem;
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.admin-item__actions button:hover{ border-color: var(--primary); }
+.admin-item__actions .is-danger:hover{ border-color: var(--accent); color: var(--accent); }
+
+.admin-empty{
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: .88rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.admin-toolbar{
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.admin-import-label{ position: relative; cursor: pointer; }
+.admin-danger:hover{ border-color: var(--accent); color: var(--accent); }
+
+.toast{
+  position: fixed;
+  bottom: 1.5rem; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text);
+  color: var(--bg);
+  padding: .75rem 1.4rem;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-family: var(--font-display);
+  opacity: 0;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+  pointer-events: none;
+  z-index: 200;
+}
+.toast.is-visible{ opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 640px){
+  .admin-item{ flex-wrap: wrap; }
+  .admin-item__actions{ width: 100%; justify-content: flex-end; }
+}

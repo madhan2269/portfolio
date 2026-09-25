@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — E.M. Madhan Portfolio</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ============ PASSCODE GATE ============
+     Client-side only — this deters casual editing, it is NOT
+     real security (anyone can view js/admin.js). Don't use this
+     panel to protect anything sensitive. Change ADMIN_PASSCODE
+     in js/admin.js to set your own. -->
+<div class="gate" id="gate">
+  <form class="gate__card" id="gateForm">
+    <span class="gate__logo">EM<span>.</span></span>
+    <h1>Admin Access</h1>
+    <p>Enter the passcode to manage portfolio work and videos.</p>
+    <input type="password" id="gatePasscode" placeholder="Passcode" autocomplete="current-password" required>
+    <button type="submit" class="btn btn--primary">Enter <span aria-hidden="true">→</span></button>
+    <p class="gate__error" id="gateError" hidden>Incorrect passcode. Try again.</p>
+    <a href="index.html" class="gate__back">← Back to site</a>
+  </form>
+</div>
+
+<!-- ============ ADMIN APP (hidden until unlocked) ============ -->
+<div class="admin" id="adminApp" hidden>
+
+  <header class="admin-nav">
+    <a href="index.html" class="admin-nav__logo">EM<span>.</span> <span class="admin-nav__badge">Admin</span></a>
+    <div class="admin-nav__actions">
+      <a href="index.html" class="btn btn--ghost">View Site</a>
+    </div>
+  </header>
+
+  <div class="admin-container">
+
+    <p class="admin-note">
+      Changes here save to <strong>this browser only</strong> (no server/database is involved — this is a
+      static, no-backend site). Use <strong>Export</strong> below regularly to keep a backup, and
+      <strong>Import</strong> to bring your work into another browser or computer.
+      <span id="storageUsage"></span>
+    </p>
+
+    <div class="admin-tabs" role="tablist">
+      <button class="admin-tab is-active" data-tab="work" role="tab" aria-selected="true">Poster / Work</button>
+      <button class="admin-tab" data-tab="videos" role="tab" aria-selected="false">Videos</button>
+      <button class="admin-tab" data-tab="profile" role="tab" aria-selected="false">Profile Photo</button>
+    </div>
+
+    <!-- ===== WORK TAB ===== -->
+    <section class="admin-panel is-active" id="panel-work">
+      <form class="admin-form" id="workForm">
+        <h2 id="workFormTitle">Add a new work item</h2>
+        <input type="hidden" id="workEditIndex" value="">
+
+        <div class="form-row">
+          <label for="workTitle">Title</label>
+          <input type="text" id="workTitle" placeholder="e.g. Diwali Sale Poster" required>
+        </div>
+
+        <div class="form-row">
+          <label for="workCategory">Category</label>
+          <select id="workCategory" required>
+            <option value="posters">Posters</option>
+            <option value="social">Social Media</option>
+            <option value="branding">Branding</option>
+            <option value="logo">Logo</option>
+            <option value="creative">Creative</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="workImageFile">Image</label>
+          <div class="file-drop" id="workImageDropZone">
+            <input type="file" id="workImageFile" accept="image/*">
+            <svg class="file-drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M12 4l-4 4M12 4l4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            <div class="file-drop__text">
+              <span class="file-drop__title">Choose an image, or drag one here</span>
+              <span class="file-drop__meta" id="workImageMeta">No file chosen yet</span>
+            </div>
+          </div>
+          <span class="form-hint">Uploads are resized automatically. Or paste a path/URL below instead.</span>
+          <input type="text" id="workImagePath" placeholder="assets/images/project-07.jpg (optional if uploading above)">
+        </div>
+
+        <div class="form-row">
+          <label for="workDesc">Description</label>
+          <textarea id="workDesc" rows="3" placeholder="A short line about this project."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="workSubmitBtn">Add Work <span aria-hidden="true">→</span></button>
+          <button type="button" class="btn btn--ghost" id="workCancelEdit" hidden>Cancel edit</button>
+        </div>
+      </form>
+
+      <div class="admin-list" id="workList"></div>
+    </section>
+
+    <!-- ===== VIDEOS TAB ===== -->
+    <section class="admin-panel" id="panel-videos">
+      <form class="admin-form" id="videoForm">
+        <h2 id="videoFormTitle">Add a new video</h2>
+        <input type="hidden" id="videoEditIndex" value="">
+
+        <div class="form-row">
+          <label for="videoTitle">Title</label>
+          <input type="text" id="videoTitle" placeholder="e.g. Brand Reel 2026" required>
+        </div>
+
+        <div class="form-row">
+          <label for="videoCategory">Category label</label>
+          <input type="text" id="videoCategory" value="Video Editing">
+        </div>
+
+        <div class="form-row">
+          <label for="videoFile">Video file</label>
+          <div class="file-drop" id="videoDropZone">
+            <input type="file" id="videoFile" accept="video/*">
+            <svg class="file-drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M12 4l-4 4M12 4l4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            <div class="file-drop__text">
+              <span class="file-drop__title">Choose a video file, or drag one here</span>
+              <span class="file-drop__meta" id="videoFileMeta">No file chosen yet</span>
+            </div>
+          </div>
+          <span class="form-hint">Uploaded videos are saved in this browser's storage (usually good for a good number of short clips). Large 4K files may be slow to save or fail on low-storage devices — if that happens, compress the video first or use the path field below instead.</span>
+          <input type="text" id="videoPath" placeholder="Or paste a path instead, e.g. assets/videos/video-05.mp4">
+        </div>
+
+        <div class="form-row">
+          <label for="videoPosterFile">Thumbnail image (optional)</label>
+          <div class="file-drop" id="videoPosterDropZone">
+            <input type="file" id="videoPosterFile" accept="image/*">
+            <svg class="file-drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M12 4l-4 4M12 4l4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            <div class="file-drop__text">
+              <span class="file-drop__title">Choose a thumbnail, or drag one here</span>
+              <span class="file-drop__meta" id="videoPosterMeta">No file chosen yet</span>
+            </div>
+          </div>
+          <input type="text" id="videoPosterPath" placeholder="Or paste a path instead, e.g. assets/images/video-05.jpg">
+        </div>
+
+        <div class="form-row">
+          <label for="videoDuration">Duration label</label>
+          <input type="text" id="videoDuration" placeholder="e.g. 00:45">
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="videoSubmitBtn">Add Video <span aria-hidden="true">→</span></button>
+          <button type="button" class="btn btn--ghost" id="videoCancelEdit" hidden>Cancel edit</button>
+        </div>
+      </form>
+
+      <div class="admin-list" id="videoList"></div>
+    </section>
+
+    <!-- ===== PROFILE PHOTO TAB ===== -->
+    <section class="admin-panel" id="panel-profile">
+      <form class="admin-form" id="profileForm">
+        <h2>Home page photo</h2>
+        <p class="admin-note" style="margin-top:0;">
+          This is the photo shown in the hero "poster" frame on the home page,
+          next to the Branding / Poster Design chips. Upload a portrait photo —
+          it's cropped to fit automatically.
+        </p>
+
+        <div class="form-row">
+          <label for="profileImageFile">Photo</label>
+          <div class="file-drop" id="profileImageDropZone">
+            <input type="file" id="profileImageFile" accept="image/*">
+            <svg class="file-drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M12 4l-4 4M12 4l4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            <div class="file-drop__text">
+              <span class="file-drop__title">Choose a photo, or drag one here</span>
+              <span class="file-drop__meta" id="profileImageMeta">No file chosen yet</span>
+            </div>
+          </div>
+          <span class="form-hint">Uploads are resized automatically. A clear, well-lit portrait works best.</span>
+        </div>
+
+        <div class="admin-item" id="profilePreviewRow" hidden>
+          <img class="admin-item__thumb" id="profilePreviewImg" src="" alt="">
+          <div class="admin-item__body">
+            <div class="admin-item__title">Current photo</div>
+            <div class="admin-item__meta">Shown live on the home page for every visitor to this browser's saved data.</div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="profileSubmitBtn">Save Photo <span aria-hidden="true">→</span></button>
+          <button type="button" class="btn btn--ghost admin-danger" id="profileRemoveBtn">Remove photo</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="admin-toolbar">
+      <button class="btn btn--ghost" id="exportBtn">Export data <span aria-hidden="true">↓</span></button>
+      <label class="btn btn--ghost admin-import-label">
+        Import data <span aria-hidden="true">↑</span>
+        <input type="file" id="importInput" accept="application/json" hidden>
+      </label>
+      <button class="btn btn--ghost admin-danger" id="resetBtn">Reset to defaults</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
